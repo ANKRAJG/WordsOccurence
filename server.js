@@ -8,31 +8,29 @@ http.createServer(function(req, response){
     response.writeHead(200, {'Content-type':'text/plan', 'Access-Control-Allow-Origin':'*'});
     var tokens = processText(body);
     var dict = computeWordOccurences(tokens);
-    var result = getTopOccuringWords(dict,10);
+    var result = getTopOccuringWords(dict, 10);
     response.write(JSON.stringify(result));
     response.end();
   })
 
 }).listen(7000);
 
-function getTopOccuringWords(dict,count){
+function getTopOccuringWords(dict, count){
   var keys = Object.keys(dict);
-  keys = keys.sort((a,b)=>{
+  keys = keys.sort((a,b) => {
     return (dict[b] - dict[a]);
   });
   var temp =   keys.slice(0,count);
-  var result = temp.reduce((acc,str)=>{
+  var result = temp.reduce((acc,str) => {
     acc[str] = dict[str];
     return acc;
-  },{});
+  }, {});
   return result;
 }
 
 function computeWordOccurences(tokens){
   var dict = {};
-  for(var i = 0;i<tokens.length;i++){
-    if(tokens[i].length<3)
-      console.log(tokens[i])
+  for(var i = 0; i<tokens.length; i++){
     if(dict[tokens[i]]){
       dict[tokens[i]]++;
     }
@@ -44,13 +42,13 @@ function computeWordOccurences(tokens){
 }
 
 function processText(text){
-  var tokens = text.replace(/\/n/g," ")
-                  .replace(/\,/g," ")
+  var tokens = text.replace(/\/n/g, " ")
+                  .replace(/\,/g, " ")
                   .split(" ")
-                  .map((w)=>w.trim())
-                  .map((w)=>w.toLowerCase())
-                  .filter((w)=>w.length>2)
-                  .filter((w)=>[
+                  .map((w) => w.trim())
+                  .map((w) => w.toLowerCase())
+                  .filter((w) => w.length>2)
+                  .filter((w) => [
                     'a',
                     'about',
                     'above',
@@ -480,7 +478,7 @@ function processText(text){
                     'your',
                     'yours',
                     'z'
-                  ].indexOf(w)<0);
+                  ].indexOf(w) <0);
     return tokens;
   //console.log(split);
 }
